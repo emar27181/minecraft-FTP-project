@@ -25,15 +25,15 @@ def extract_check_in_out():
             """
 
 
-def print_about_check_in_out(log_line):
+def return_about_check_in_out(log_line):
     """
-      引数で受け取ったログに入退室に関する表示をする関数
+      引数で受け取ったログに入退室に関する表示文を返す関数
 
-    引数: 
+    引数:
         log_line (str): 入退室に関するログ
 
     戻り値:
-        None
+        str: 入退室に関する表示文
     """
 
     splited_log = log_line.split(" ")
@@ -44,8 +44,10 @@ def print_about_check_in_out(log_line):
 
     if (connection == "disconnected"):
         print(f" {player_name} が退出しました．")
+        return f" {player_name} が退出しました．"
     else:
         print(f" {player_name} が入室しました．")
+        return f" {player_name} が入室しました．"
 
 
 def is_log_updated():
