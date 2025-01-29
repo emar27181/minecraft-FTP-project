@@ -20,5 +20,14 @@ def send_discord_message(message):
     else:
         print(f"❌ 送信エラー: {response.status_code}, {response.text}")
 
-# "HelloWorld" を送信
-send_discord_message("HelloWorld")
+
+def is_send_discord_message_about_check_in_out():
+    """
+    Discordにメッセージを送信するか確認する関数
+    """
+    if is_log_updated():
+        if is_latest_end_of_line_log_about_check_in_out():
+            return True
+    else:
+        return False
+
