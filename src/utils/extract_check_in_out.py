@@ -54,7 +54,7 @@ def is_log_updated():
     """
       latest.logの最終行から新しいログが追加されたか確認する関数
 
-    引数: 
+    引数:
         None
 
     戻り値:
@@ -85,16 +85,18 @@ def is_log_updated():
     # print(latest_log_data)
 
 
-if __name__ == '__main__':
+def is_latest_end_of_line_log_about_check_in_out():
+    """
+        latest_end_of_line.logの最終行が入退室に関するログか確認する関数
 
-    # extract_check_in_out()
+    引数:
+        None
 
-    # ログが更新された場合
-    if is_log_updated():
-        with open("src/data/output/latest_end_of_line.log", 'r')as file:
-            latest_end_of_line_log_data = file.read()
+    戻り値:
+        bool: 入退室に関するログの場合True，そうでない場合False
 
-        # 更新されたログが入退室に関するログだった場合
-        if "Player" in latest_end_of_line_log_data:
-            print_about_check_in_out(latest_end_of_line_log_data)
-            # extract_check_in_out()
+    """
+    with open("src/data/output/latest_end_of_line.log", 'r')as file:
+        latest_end_of_line_log_data = file.read()
+
+    return "Player" in latest_end_of_line_log_data
