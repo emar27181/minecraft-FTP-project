@@ -7,8 +7,9 @@ import subprocess
 
 
 def run_script():
-    print("Executing run.py...")
     subprocess.run(["python", "src/ftp.py"])
+    subprocess.run(["python", "src/webhook.py"])
+    # subprocess.run(["python", "src/utils/extract_check_in_out.py"])
 
 
 schedule.every(1).minutes.do(run_script)
