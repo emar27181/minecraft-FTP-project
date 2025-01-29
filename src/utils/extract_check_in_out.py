@@ -10,6 +10,8 @@ def extract_check_in_out():
     for log in log_data:
         # 接続・切断に関するログだった場合
         if "connect" in log:
+            is_log_about_check_in_out(log)
+            """
             splited_log = log.split(" ")
             date, time, connection, player_name, xuid = splited_log[0], splited_log[1], splited_log[4], splited_log[5], splited_log[7]
 
@@ -20,6 +22,30 @@ def extract_check_in_out():
                 print(f" {player_name} が退出しました．")
             else:
                 print(f" {player_name} が入室しました．")
+            """
+
+
+def print_about_check_in_out(log_line):
+    """
+      引数で受け取ったログに入退室に関する表示をする関数
+
+    引数: 
+        log_line (str): 入退室に関するログ
+
+    戻り値:
+        None
+    """
+
+    splited_log = log_line.split(" ")
+    date, time, connection, player_name, xuid = splited_log[0], splited_log[1], splited_log[4], splited_log[5], splited_log[7]
+
+    player_name = player_name.strip(",")
+    connection = connection.strip(":")
+
+    if (connection == "disconnected"):
+        print(f" {player_name} が退出しました．")
+    else:
+        print(f" {player_name} が入室しました．")
 
 
 def is_log_updated():
@@ -59,5 +85,14 @@ def is_log_updated():
 
 if __name__ == '__main__':
 
+    # extract_check_in_out()
+
+    # ログが更新された場合
     if is_log_updated():
-        extract_check_in_out()
+        with open("src/data/output/latest_end_of_line.log", 'r')as file:
+            latest_end_of_line_log_data = file.read()
+
+        # 更新されたログが入退室に関するログだった場合
+        if "Player" in latest_end_of_line_log_data:
+            print_about_check_in_out(latest_end_of_line_log_data)
+            # extract_check_in_out()
