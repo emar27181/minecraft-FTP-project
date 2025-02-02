@@ -1,6 +1,6 @@
-def return_about_check_in_out(log_line):
+def return_about_check_in_out_be_edition(log_line):
     """
-      引数で受け取ったログに入退室に関する表示文を返す関数
+      引数で受け取ったログに入退室に関する表示文を返す関数(統合版用)
 
     引数:
         log_line (str): 入退室に関するログ
@@ -16,6 +16,27 @@ def return_about_check_in_out(log_line):
     connection = connection.strip(":")
 
     if (connection == "disconnected"):
+        print(f" {player_name} が退出しました．")
+        return f" {player_name} が退出しました．"
+    else:
+        print(f" {player_name} が入室しました．")
+        return f" {player_name} が入室しました．"
+    
+def return_about_check_in_out_java_edition(log_line):
+    """
+      引数で受け取ったログに入退室に関する表示文を返す関数(Java版用)
+
+    引数:
+        log_line (str): 入退室に関するログ
+
+    戻り値:
+        str: 入退室に関する表示文
+    """
+
+    splited_log = log_line.split(" ")
+    time,  player_name,connection= splited_log[0], splited_log[3], splited_log[4]
+
+    if (connection == "left"):
         print(f" {player_name} が退出しました．")
         return f" {player_name} が退出しました．"
     else:
@@ -58,9 +79,9 @@ def is_log_updated():
     # print(latest_log_data)
 
 
-def is_latest_end_of_line_log_about_check_in_out():
+def is_latest_end_of_line_log_about_check_in_out_be_edition():
     """
-        latest_end_of_line.logの最終行が入退室に関するログか確認する関数
+        latest_end_of_line.logの最終行が入退室に関するログか確認する関数(統合版(BE)用)
 
     引数:
         None
@@ -73,3 +94,20 @@ def is_latest_end_of_line_log_about_check_in_out():
         latest_end_of_line_log_data = file.read()
 
     return "Player" in latest_end_of_line_log_data
+
+def is_latest_end_of_line_log_about_check_in_out_java_edition():
+    """
+        latest_end_of_line.logの最終行が入退室に関するログか確認する関数(Java用)
+
+    引数:
+        None
+
+    戻り値:
+        bool: 入退室に関するログの場合True，そうでない場合False
+
+    """
+    with open("src/data/output/latest_end_of_line.log", 'r')as file:
+        latest_end_of_line_log_data = file.read()
+
+    return "the game" in latest_end_of_line_log_data
+
