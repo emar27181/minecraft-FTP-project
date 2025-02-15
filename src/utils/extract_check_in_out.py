@@ -57,7 +57,7 @@ def update_latest_added_lines_log():
     with open("src/data/output/latest_end_of_line.log", 'r')as file:
         latest_end_of_line_log_data = file.read()
 
-    print(f"latest_end_of_line_log_data = {latest_end_of_line_log_data}")
+    # print(f"latest_end_of_line_log_data = {latest_end_of_line_log_data}")
     added_lines = []
     for latest_log_one_line in reversed(latest_log_data):
         print(f"latest_log_one_line = {latest_log_one_line}")
@@ -69,7 +69,7 @@ def update_latest_added_lines_log():
 
     added_lines.reverse()
 
-    print(f"new_log = {added_lines}")
+    # print(f"new_log = {added_lines}")
 
     output_file_path = "src/data/output/latest_added_lines.log"
     with open(output_file_path, "w", encoding="utf-8") as f:
