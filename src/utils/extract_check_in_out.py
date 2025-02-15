@@ -1,4 +1,4 @@
-def return_about_check_in_out_be_edition(log_line):
+def return_about_check_in_out_one_line_be_edition(log_line):
     """
       引数で受け取ったログに入退室に関する表示文を返す関数(統合版用)
 
@@ -23,7 +23,27 @@ def return_about_check_in_out_be_edition(log_line):
         return f" {player_name} が入室しました．"
 
 
-def return_about_check_in_out_java_edition(log_line):
+def return_about_check_in_out_java_edition(log_lines):
+    """
+      引数で受け取ったログのうち入退室に関する表示文を返す関数(Java版用)
+
+    引数:
+        log_lines (list): ログ
+
+    戻り値:
+        about_check_in_out_lines: 入退室に関する表示文をリストで返す
+    """
+
+    about_check_in_out_lines = []
+    for log_line in log_lines:
+        # print(f"log_line = {log_line}")
+        if (is_log_about_check_in_out_java_edition(log_line)):
+            about_check_in_out_lines.append(return_about_check_in_out_one_line_java_edition(log_line))
+
+    return about_check_in_out_lines
+
+
+def return_about_check_in_out_one_line_java_edition(log_line):
     """
       引数で受け取ったログに入退室に関する表示文を返す関数(Java版用)
 
@@ -60,7 +80,7 @@ def update_latest_added_lines_log():
     # print(f"latest_end_of_line_log_data = {latest_end_of_line_log_data}")
     added_lines = []
     for latest_log_one_line in reversed(latest_log_data):
-        print(f"latest_log_one_line = {latest_log_one_line}")
+        # print(f"latest_log_one_line = {latest_log_one_line}")
 
         if (latest_log_one_line != latest_end_of_line_log_data):
             added_lines.append(latest_log_one_line)
@@ -96,7 +116,7 @@ def update_latest_end_of_line_log():
 
 def is_log_updated():
     """
-      latest.logの最終行から新しいログが追加されたか確認する関数
+        latest.logの最終行から新しいログが追加されたか確認する関数
 
     引数:
         None
@@ -125,6 +145,21 @@ def is_log_updated():
         return True
 
     # print(latest_log_data)
+
+
+def is_log_about_check_in_out_java_edition(log_line):
+    """
+        引数で受け取った行が入退室に関するログか確認する関数(Java用)
+
+    引数:
+        None
+
+    戻り値:
+        bool: 入退室に関するログの場合True，そうでない場合False
+
+    """
+
+    return "the game" in log_line
 
 
 def is_latest_end_of_line_log_about_check_in_out_be_edition():
