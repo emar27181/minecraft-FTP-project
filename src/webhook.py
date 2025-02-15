@@ -43,20 +43,10 @@ def send_discord_message_about_check_in_out():
     messages = return_about_check_in_out_java_edition(latest_added_lines_data)
 
     for message in messages:
-        print(message)
-    # print(f"latest_added_lines_data = {latest_added_lines_data}")
+        send_discord_message(message)
 
 
 if __name__ == "__main__":
 
-    # print(is_send_discord_message_about_check_in_out())
-
     update_latest_changed_log()
     send_discord_message_about_check_in_out()
-    """
-    if (send_discord_message_about_check_in_out()):
-        with open("src/data/output/latest_end_of_line.log", 'r')as file:
-            latest_end_of_line_log_data = file.read()
-        # send_discord_message(return_about_check_in_out_java_edition(latest_end_of_line_log_data))
-    # send_discord_message("HelloWorld")
-    """

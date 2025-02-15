@@ -36,7 +36,6 @@ def return_about_check_in_out_java_edition(log_lines):
 
     about_check_in_out_lines = []
     for log_line in log_lines:
-        # print(f"log_line = {log_line}")
         if (is_log_about_check_in_out_java_edition(log_line)):
             about_check_in_out_lines.append(return_about_check_in_out_one_line_java_edition(log_line))
 
@@ -77,19 +76,14 @@ def update_latest_added_lines_log():
     with open("src/data/output/latest_end_of_line.log", 'r')as file:
         latest_end_of_line_log_data = file.read()
 
-    # print(f"latest_end_of_line_log_data = {latest_end_of_line_log_data}")
     added_lines = []
     for latest_log_one_line in reversed(latest_log_data):
-        # print(f"latest_log_one_line = {latest_log_one_line}")
-
         if (latest_log_one_line != latest_end_of_line_log_data):
             added_lines.append(latest_log_one_line)
         else:
             break
 
     added_lines.reverse()
-
-    # print(f"new_log = {added_lines}")
 
     output_file_path = "src/data/output/latest_added_lines.log"
     with open(output_file_path, "w", encoding="utf-8") as f:
@@ -143,8 +137,6 @@ def is_log_updated():
     else:
         print(f"=== 新しいログがあります．=============\n{latest_end_of_line_log_data} -> {now_end_of_line_log_data}")
         return True
-
-    # print(latest_log_data)
 
 
 def is_log_about_check_in_out_java_edition(log_line):
