@@ -252,7 +252,4 @@ def extract_online_players():
         elif (connection == "left"):
             offline_players.append(player_name)
 
-    print(f"online players = {online_players}")
-    print(f"offline players = {offline_players}")
-
     return online_players, offline_players
