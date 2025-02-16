@@ -220,3 +220,39 @@ def is_latest_end_of_line_log_about_check_in_out_java_edition():
         latest_end_of_line_log_data = file.read()
 
     return "the game" in latest_end_of_line_log_data
+
+
+def extract_online_players():
+    """現在のオンライン・オフラインのプレイヤーを抽出する関数
+    引数:
+        none
+    戻り値:
+        online_players: オンラインプレイヤーのリスト
+        offline_player: オフラインプレイヤーのリスト
+
+    """
+
+    with open("src/data/output/latest_check_in_out.log", "r") as file:
+        check_in_out_log_lines = file.readlines()
+
+    online_players = []
+    offline_players = []
+
+    # 入退室に関するログを逆順で検索し，先に出てきたコネクションを現在の状態としてラベル付けする
+    for check_in_out_log_line in reversed(check_in_out_log_lines):
+        time, player_name, connection = return_about_connection_data_from_log_line(check_in_out_log_line)
+
+        # 既に判定されているプレイヤーの場合処理をパス
+        if ((player_name in online_players) or (player_name in offline_players)):
+            continue
+
+        elif (connection == "joined"):
+            online_players.append(player_name)
+
+        elif (connection == "left"):
+            offline_players.append(player_name)
+
+    print(f"online players = {online_players}")
+    print(f"offline players = {offline_players}")
+
+    return online_players, offline_players
