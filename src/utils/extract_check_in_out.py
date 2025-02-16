@@ -42,9 +42,27 @@ def return_about_check_in_out_java_edition(log_lines):
     return about_check_in_out_lines
 
 
+def return_about_connection_data_from_log_line(log_line):
+    """
+    引数で受け取ったログからプレイヤー名と接続状態を抽出する関数
+
+    引数:
+        log_line (str): 入退室に関するログ
+
+    戻り値:
+        time (str): 時刻
+        player_name (str): プレイヤー名
+        connection (str): 接続状態
+    """
+
+    splited_log = log_line.split(" ")
+    time, player_name, connection = splited_log[0], splited_log[3], splited_log[4]
+    return time, player_name, connection
+
+
 def return_about_check_in_out_one_line_java_edition(log_line):
     """
-      引数で受け取ったログに入退室に関する表示文を返す関数(Java版用)
+    引数で受け取ったログに入退室に関する表示文を返す関数(Java版用)
 
     引数:
         log_line (str): 入退室に関するログ
