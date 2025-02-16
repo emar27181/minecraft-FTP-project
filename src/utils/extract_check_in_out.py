@@ -126,6 +126,22 @@ def update_latest_end_of_line_log():
     print(f"{output_file_path} を更新しました．")
 
 
+def update_check_in_out_log():
+    """入退室に関するログを更新する関数
+    """
+
+    output_file_path = "src/data/output/latest_check_in_out.log"
+
+    with open("src/data/output/latest_added_lines.log", 'r')as file:
+        latest_added_lines = file.readlines()
+
+    for latest_added_line in latest_added_lines:
+        if (is_log_about_check_in_out_java_edition(latest_added_line)):
+            with open(output_file_path, 'a') as file:
+                file.write(latest_added_line)
+            print(f"{output_file_path} が更新されました．")
+
+
 def is_log_updated():
     """
         latest.logの最終行から新しいログが追加されたか確認する関数
