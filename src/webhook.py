@@ -43,7 +43,12 @@ def send_discord_message_about_check_in_out():
     messages = return_about_check_in_out_java_edition(latest_added_lines_data)
 
     for message in messages:
-        send_discord_message(message)
+
+def print_debug_logs():
+    print("--- DEBUG LOGS ----------")
+    online_players, offline_players = extract_online_players()
+    print("online_players:", online_players)
+    print("offline_players:", offline_players)
 
 
 if __name__ == "__main__":
