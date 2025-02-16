@@ -1,13 +1,17 @@
 import os
 import requests
 from dotenv import load_dotenv
-from utils.extract_check_in_out import is_latest_end_of_line_log_about_check_in_out_java_edition, is_log_updated, return_about_check_in_out_java_edition, update_latest_added_lines_log, update_latest_end_of_line_log
+import time
+from datetime import datetime
+from utils.extract_check_in_out import is_latest_end_of_line_log_about_check_in_out_java_edition, is_log_updated, return_about_check_in_out_java_edition, update_latest_added_lines_log, update_latest_end_of_line_log, update_check_in_out_log, extract_online_players
 
 # .env を読み込む
 load_dotenv()
 
 # Webhook URL を環境変数から取得
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")
+TOKEN = os.getenv("DISCORD_TOKEN")
+CHANNEL_ID = os.getenv("DISCORD_MINECRAFT_CHANNEL_ID")
 
 # print(DISCORD_WEBHOOK_URL)
 
@@ -43,6 +47,39 @@ def send_discord_message_about_check_in_out():
     messages = return_about_check_in_out_java_edition(latest_added_lines_data)
 
     for message in messages:
+        send_discord_message(message)
+
+
+def update_channel_topic():
+    """Discordのチャンネルトピックを変更する関数(表示させるトピック: オンラインのプレイヤーの名前)
+    """
+
+    new_topic = "🟢 オンラインのプレイヤー: "
+    online_players, offline_players = extract_online_players()
+
+    for oneline_player in online_players:
+        new_topic += oneline_player + ", "
+
+    url = f"https://discord.com/api/v10/channels/{CHANNEL_ID}"
+    headers = {
+        "Authorization": f"Bot {TOKEN}",
+        "Content-Type": "application/json"
+    }
+    data = {
+        "topic": new_topic
+    }
+
+    response = requests.patch(url, headers=headers, json=data)
+
+    if response.status_code == 200:
+        print("チャンネルトピックを更新しました．")
+    elif response.status_code == 429:
+        retry_after = response.json().get("retry_after", 30)  # 待機時間を取得
+        print(f"チャンネル操作のリミットに達しました． retry_after = {retry_after}")
+        # time.sleep(retry_after)
+
+    print(response.status_code, response.json())
+
 
 def print_debug_logs():
     print("--- DEBUG LOGS ----------")
@@ -52,6 +89,15 @@ def print_debug_logs():
 
 
 if __name__ == "__main__":
+    now = datetime.now()
 
     update_latest_changed_log()
+    update_check_in_out_log()
+    extract_online_players()
+
     send_discord_message_about_check_in_out()
+
+    if int(now.minute) % 10 == 0:  # 10分に一回トピックの更新
+        update_channel_topic()
+
+    print_debug_logs()
