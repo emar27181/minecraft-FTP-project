@@ -4,22 +4,24 @@ from dotenv import load_dotenv
 import time
 from datetime import datetime
 from utils.extract_check_in_out import is_latest_end_of_line_log_about_check_in_out_java_edition, is_log_updated, return_about_check_in_out_java_edition, update_latest_added_lines_log, update_latest_end_of_line_log, update_check_in_out_log, extract_online_players
+from utils.helpers import is_empty
 
 # .env を読み込む
 load_dotenv()
 
 # Webhook URL を環境変数から取得
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")
+DISCORD_LOG_CHANNNEL_WEBHOOK_URL = os.getenv("DISCORD_LOG_CHANNNEL_WEBHOOK_URL")
 TOKEN = os.getenv("DISCORD_TOKEN")
 CHANNEL_ID = os.getenv("DISCORD_MINECRAFT_CHANNEL_ID")
 
 # print(DISCORD_WEBHOOK_URL)
 
 
-def send_discord_message(message):
-    """Discord にメッセージを送信"""
+def send_discord_message(message, URL):
+    """引数で受け取ったURLのチャンネルにメッセージを送信"""
     payload = {"content": message}
-    response = requests.post(DISCORD_WEBHOOK_URL, json=payload)
+    response = requests.post(URL, json=payload)
 
     if response.status_code == 204:
         print("✅ メッセージ送信成功！")
@@ -39,7 +41,7 @@ def update_latest_changed_log():
 
 def send_discord_message_about_check_in_out():
     """
-    Discordにメッセージを送信する関数
+    Discordに入退室に関するメッセージを送信する関数
     """
     with open("src/data/output/latest_added_lines.log", 'r')as file:
         latest_added_lines_data = file.read()
@@ -47,7 +49,21 @@ def send_discord_message_about_check_in_out():
     messages = return_about_check_in_out_java_edition(latest_added_lines_data)
 
     for message in messages:
-        send_discord_message(message)
+        send_discord_message(message, DISCORD_WEBHOOK_URL)
+
+
+def send_discord_message_about_added_latest_log():
+    """
+    Discordにlatest.logメッセージを送信する関数
+    """
+    with open("src/data/output/latest_added_lines.log", 'r')as file:
+        latest_added_lines_data = file.read()
+        # latest_added_lines_data = latest_added_lines_data.split("\n")
+    # messages = return_about_check_in_out_java_edition(latest_added_lines_data)
+    if is_empty(latest_added_lines_data):
+        print("latest.log に変更はありません")
+    else:
+        send_discord_message(latest_added_lines_data, DISCORD_LOG_CHANNNEL_WEBHOOK_URL)
 
 
 def update_channel_topic():
@@ -96,6 +112,7 @@ if __name__ == "__main__":
     extract_online_players()
 
     send_discord_message_about_check_in_out()
+    send_discord_message_about_added_latest_log()
 
     if int(now.minute) % 10 == 0:  # 10分に一回トピックの更新
         update_channel_topic()
