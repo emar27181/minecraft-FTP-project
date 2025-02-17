@@ -32,7 +32,7 @@ def download_file(dir_path, filename):
 
     now = datetime.now()
 
-    print(f"latest.log をダウンロードしました．({now})\n path: {output_file_path}")
+    print(f"{output_file_path} をダウンロードしました．")
 
 
 def run_ftp_connection():
@@ -45,7 +45,7 @@ def run_ftp_connection():
         ftp.connect(ftp_host, ftp_port)
         ftp.login(ftp_user, ftp_pass)
 
-        print("=== FTP接続成功 =================")
+        # print("=== FTP接続成功 =================")
 
         # 現在のディレクトリの一覧を取得
         files = ftp.nlst()
