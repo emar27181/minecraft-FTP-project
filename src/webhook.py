@@ -3,7 +3,7 @@ import requests
 from dotenv import load_dotenv
 import time
 from datetime import datetime
-from utils.extract_check_in_out import is_latest_end_of_line_log_about_check_in_out_java_edition, is_log_updated, return_about_check_in_out_java_edition, update_latest_added_lines_log, update_latest_end_of_line_log, update_check_in_out_log, extract_online_players
+from utils.extract_check_in_out import is_latest_end_of_line_log_about_check_in_out_java_edition, is_log_updated, return_about_check_in_out_java_edition, update_latest_added_lines_log, update_latest_end_of_line_log, update_check_in_out_log, extract_online_players, is_added_log_about_check_in_out
 from utils.helpers import is_empty
 
 # .env を読み込む
@@ -142,7 +142,7 @@ if __name__ == "__main__":
     send_discord_message_about_check_in_out()
     send_discord_message_about_added_latest_log()
 
-    if int(now.minute) % 10 == 0:
+    if is_added_log_about_check_in_out():
         update_channel_name()
         update_channel_topic()
 

@@ -173,6 +173,16 @@ def is_log_updated():
         return True
 
 
+def is_added_log_about_check_in_out():
+    """
+    追加されたログに入退出に関する記述が含まれているかどうかを確認する関数
+    """
+    with open("src/data/output/latest_added_lines.log", 'r')as file:
+        latest_added_lines = file.read()
+
+    return "the game" in latest_added_lines
+
+
 def is_log_about_check_in_out_java_edition(log_line):
     """
         引数で受け取った行が入退室に関するログか確認する関数(Java用)
