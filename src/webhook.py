@@ -92,9 +92,10 @@ def update_channel_topic():
     elif response.status_code == 429:
         retry_after = response.json().get("retry_after", 30)  # 待機時間を取得
         print(f"チャンネル操作のリミットに達しました． retry_after = {retry_after}")
+        print(response.status_code, response.json())
         # time.sleep(retry_after)
-
-    print(response.status_code, response.json())
+    else:
+        print(response.status_code, response.json())
 
 
 def update_channel_name():
@@ -120,9 +121,10 @@ def update_channel_name():
     elif response.status_code == 429:
         retry_after = response.json().get("retry_after", 30)  # 待機時間を取得
         print(f"チャンネル操作のリミットに達しました． retry_after = {retry_after}")
+        print(response.status_code, response.json())
         # time.sleep(retry_after)
-
-    print(response.status_code, response.json())
+    else:
+        print(response.status_code, response.json())
 
 
 def print_debug_logs():
