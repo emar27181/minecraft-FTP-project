@@ -70,7 +70,7 @@ def update_channel_topic():
     """Discordのチャンネルトピックを変更する関数(表示させるトピック: オンラインのプレイヤーの名前)
     """
 
-    new_topic = "🟢 オンラインのプレイヤー: "
+    new_topic = "オンラインのプレイヤー: "
     online_players, offline_players = extract_online_players()
 
     for oneline_player in online_players:
@@ -97,6 +97,34 @@ def update_channel_topic():
     print(response.status_code, response.json())
 
 
+def update_channel_name():
+    """Discordのチャンネル名を名前+オンラインに変更する関数
+    """
+
+    online_players, offline_players = extract_online_players()
+    new_name = f"minecraft🔥{len(online_players)}"
+
+    url = f"https://discord.com/api/v10/channels/{CHANNEL_ID}"
+    headers = {
+        "Authorization": f"Bot {TOKEN}",
+        "Content-Type": "application/json"
+    }
+    data = {
+        "name": new_name
+    }
+
+    response = requests.patch(url, headers=headers, json=data)
+
+    if response.status_code == 200:
+        print("チャンネル名を更新しました．")
+    elif response.status_code == 429:
+        retry_after = response.json().get("retry_after", 30)  # 待機時間を取得
+        print(f"チャンネル操作のリミットに達しました． retry_after = {retry_after}")
+        # time.sleep(retry_after)
+
+    print(response.status_code, response.json())
+
+
 def print_debug_logs():
     print("--- DEBUG LOGS ----------")
     online_players, offline_players = extract_online_players()
@@ -114,7 +142,8 @@ if __name__ == "__main__":
     send_discord_message_about_check_in_out()
     send_discord_message_about_added_latest_log()
 
-    if int(now.minute) % 10 == 0:  # 10分に一回トピックの更新
+    if int(now.minute) % 10 == 0:
+        update_channel_name()
         update_channel_topic()
 
     print_debug_logs()
