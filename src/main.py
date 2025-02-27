@@ -13,7 +13,7 @@ def run_script():
     # subprocess.run(["python", "src/utils/extract_check_in_out.py"])
 
 
-schedule.every(1).minutes.do(run_script)
+schedule.every(10).minutes.do(run_script)
 
 if __name__ == "__main__":
     # subprocess.run(["python", "src/ftp.py"])
