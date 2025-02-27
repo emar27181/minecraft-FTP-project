@@ -95,10 +95,12 @@ def return_about_check_in_out_one_line_java_edition(log_line):
 
     if (connection == "left"):
         print(f" {hours}:{minutes} {player_name} が退出しました．")
-        return f" {hours}:{minutes} {player_name} が退出しました．"
+        return f" [{hours}:{minutes}] **{player_name}** が退出しました．"
     elif (connection == "joined"):
         print(f" {hours}:{minutes} {player_name} が入室しました．")
-        return f" {hours}:{minutes} {player_name} が入室しました．"
+        return f" [{hours}:{minutes}] **{player_name}** が入室しました．"
+    else:
+        return ""
 
 
 def update_latest_added_lines_log():
