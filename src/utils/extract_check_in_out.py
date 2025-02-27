@@ -60,6 +60,23 @@ def return_about_connection_data_from_log_line(log_line):
     return time, player_name, connection
 
 
+def return_times_from_log_time(time):
+    """
+    引数で受け取るlatest.logの時刻データ("[12:22:30]")から時，分，秒を抽出する関数
+
+    引数:
+        time (str): 時刻データ
+
+    戻り値:
+        hours (str): 時
+        minutes (str): 分
+        seconds (str): 秒
+    """
+    time = time.strip("[]")  # [] を取り除く
+    hours, minutes, seconds = map(str, time.split(":"))
+    return hours, minutes, seconds
+
+
 def return_about_check_in_out_one_line_java_edition(log_line):
     """
     引数で受け取ったログに入退室に関する表示文を返す関数(Java版用)
@@ -74,12 +91,16 @@ def return_about_check_in_out_one_line_java_edition(log_line):
     splited_log = log_line.split(" ")
     time, player_name, connection = splited_log[0], splited_log[3], splited_log[4]
 
+    hours, minutes, seconds = return_times_from_log_time(time)
+
     if (connection == "left"):
-        print(f" {player_name} が退出しました．")
-        return f" {player_name} が退出しました．"
+        print(f" {hours}:{minutes} {player_name} が退出しました．")
+        return f" [{hours}:{minutes}] **{player_name}** が退出しました．"
+    elif (connection == "joined"):
+        print(f" {hours}:{minutes} {player_name} が入室しました．")
+        return f" [{hours}:{minutes}] **{player_name}** が入室しました．"
     else:
-        print(f" {player_name} が入室しました．")
-        return f" {player_name} が入室しました．"
+        return ""
 
 
 def update_latest_added_lines_log():
